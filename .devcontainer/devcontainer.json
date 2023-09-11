@@ -1,0 +1,71 @@
+{
+  "name": "Python Development Container",
+  "build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+
+  	"features": {
+		"ghcr.io/devcontainers/features/nvidia-cuda:1": { 
+		  "installCudnn": true
+		}
+	  },
+  	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": { 
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"go.toolsManagement.checkForUpdates": "local",
+				"go.useLanguageServer": true,
+				"go.gopath": "/go",
+				"python.linting.enabled": true,
+				"python.linting.pylintEnabled": true,
+				"python.formatting.blackPath": "/usr/local/bin/black",
+				"python.formatting.yapfPath": "/usr/local/bin/yapf",
+				"python.linting.banditPath": "/usr/local/bin/bandit",
+				"python.linting.flake8Path": "/usr/local/bin/flake8",
+				"python.linting.mypyPath": "/usr/local/bin/mypy",
+				"python.linting.pycodestylePath": "/usr/local/bin/pycodestyle",
+				"python.linting.pydocstylePath": "/usr/local/bin/pydocstyle",
+				"python.linting.pylintPath": "/usr/local/bin/pylint",
+				"files.watcherExclude": {
+					"**/target/**": true
+				}
+			},
+  "extensions": [
+        "GitHub.vscode-pull-request-github",
+				"GitHub.copilot-nightly",
+				"ms-azuretools.vscode-docker",
+				"ms-toolsai.jupyter",
+				"ms-toolsai.jupyter-keymap",
+				"ms-toolsai.jupyter-renderers",
+				"ms-python.vscode-pylance",
+				"ms-python.python",
+				"ms-vscode.makefile-tools",
+			    "etmoffat.pip-packages", 
+				"ms-python.pylint"],
+    	"remoteUser": "rmr_code",
+
+	"overrideCommand": false,
+
+	"mounts": ["source=codespaces-linux-var-lib-docker,target=/var/lib/docker,type=volume"],
+
+	"runArgs": [
+		"--cap-add=SYS_PTRACE",
+		"--security-opt",
+		"seccomp=unconfined",
+		"--privileged",
+		"--init"
+	],
+	
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// "oryx build" will automatically install your dependencies and attempt to build your project
+	//"postCreateCommand": "oryx build -p virtualenv_name=.venv --log-file /tmp/oryx-build.log --manifest-dir /tmp || echo 'Could not auto-build. Skipping.'"
+	 "postCreateCommand": "pip install -r requirements.txt"
+  }
+  }
+}
