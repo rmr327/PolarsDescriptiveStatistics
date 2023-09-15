@@ -1,30 +1,28 @@
 """Test script for pandas descriptive statistics script"""
 import sys
-from math import floor
-import pandas as pd
+import polars as pl
 import matplotlib.pyplot as plt
-sys.path.append("/workspaces/PandasDescriptiveStatisitcs")
-from src.pandas_descriptive_statistics import return_25th_quantile, return_mean
-from src.pandas_descriptive_statistics import return_std_dev, return_median, visualize_dataset
+sys.path.append("/workspaces/PandasDescriptiveStatisitcs/tests")
+from polars_descriptive_statistics import return_25th_quantile, return_mean
+from polars_descriptive_statistics import return_std_dev, return_median, visualize_dataset
 
 
 def test_return_25th_quantile():
     """Test function for return_25th_quantile"""
-    data = pd.read_csv("data/iris_data.csv")
+    data = pl.read_csv("data/iris_data.csv")
     target_column = 'sepal_width'
 
     res =  return_25th_quantile(data, target_column)
 
     # hand calculations
-    data = data.sort_values(by=target_column)
-    quan_25th = data.iloc[floor(data.shape[0] / 4)][target_column]
+    quan_25th = data[target_column].quantile(0.25)
 
     assert res == quan_25th
 
 
 def test_return_mean():
     """Test function for return_mean"""
-    data = pd.read_csv("data/iris_data.csv")
+    data = pl.read_csv("data/iris_data.csv")
     target_column = 'sepal_width'
 
     # hand calculation
@@ -40,7 +38,7 @@ def test_return_mean():
 def test_return_std_dev():
     """Test function for return_std_dev"""
     data = {'A': [1, 2, 3, 4, 5]}
-    data = pd.DataFrame(data)
+    data = pl.DataFrame(data)
 
     result = return_std_dev(data, 'A')
 
@@ -49,7 +47,7 @@ def test_return_std_dev():
 
 def test_return_median():
     """Test function for return_median"""
-    data = pd.read_csv("data/iris_data.csv")
+    data = pl.read_csv("data/iris_data.csv")
     target_column = 'sepal_width'
 
     # hand calculation
@@ -64,7 +62,7 @@ def test_return_median():
 def test_visualize_dataset():
     """Testing function for visualization"""
 
-    data = pd.read_csv("data/iris_data.csv")
+    data = pl.read_csv("data/iris_data.csv")
     target_column = 'sepal_width'
     outcome_column = 'petal_width'
     interaction_col = 'species'

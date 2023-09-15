@@ -1,19 +1,19 @@
 """Python Pandas descriptive statistics script"""
-import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap, Normalize
 import numpy as np
+import polars as pl
 
 
-def return_25th_quantile(data_: pd.DataFrame, target: str) -> float:
-    """Takes in a dataframe and returns 25th quantile of the target column"""
+def return_25th_quantile(data_: pl.DataFrame, target: str) -> float:
+    """Takes in a polars dataframe and returns 25th quantile of the target column"""
 
     target_quantile = data_[target].quantile(0.25)
 
     return target_quantile
 
 
-def return_mean(data_: pd.DataFrame, target: str) -> float:
+def return_mean(data_: pl.DataFrame, target: str) -> float:
     """Takes in a dataframe and returns the mean of the target column"""
 
     target_mean = data_[target].mean()
@@ -21,7 +21,7 @@ def return_mean(data_: pd.DataFrame, target: str) -> float:
     return target_mean
 
 
-def return_std_dev(data_: pd.DataFrame, target: str) -> float:
+def return_std_dev(data_: pl.DataFrame, target: str) -> float:
     """Takes in a dataframe and returns the standard deviation of the target column"""
 
     target_std = data_[target].std()
@@ -29,7 +29,7 @@ def return_std_dev(data_: pd.DataFrame, target: str) -> float:
     return target_std
 
 
-def return_median(data_: pd.DataFrame, target: str) -> float:
+def return_median(data_: pl.DataFrame, target: str) -> float:
     """Takes in a dataframe and returns the mean of the target column"""
 
     target_median = data_[target].median()
@@ -37,7 +37,7 @@ def return_median(data_: pd.DataFrame, target: str) -> float:
     return target_median
 
 
-def visualize_dataset(data_: pd.DataFrame, outcome_var: str, target_var: str,
+def visualize_dataset(data_: pl.DataFrame, outcome_var: str, target_var: str,
                        inteaction_term: str) -> None:
     """Visualizes the passed data. Makes a scatter plot of target vs outcome
     variables. Colors the scatter plot by the interaction term. Draws a best
@@ -59,7 +59,7 @@ def visualize_dataset(data_: pd.DataFrame, outcome_var: str, target_var: str,
     plt.scatter(
         data_[target_var],
         data_[outcome_var],
-        c=data_[inteaction_term].apply(lambda x: list(categories).index(x)),
+        c=data_[inteaction_term].map_elements(lambda x: list(categories).index(x)),
         cmap=custom_cmap)
 
     # Add labels
@@ -69,7 +69,7 @@ def visualize_dataset(data_: pd.DataFrame, outcome_var: str, target_var: str,
 
     # Fitting and plotting linear regression models for each interaction term category
     for cat in categories:
-        data_c = data_.loc[data_[inteaction_term] == cat]
+        data_c = data_.filter(data_[inteaction_term] == cat)
 
         slope, intercept = np.polyfit(data_c[target_var], data_c[outcome_var], 1)
         best_fit_line = slope * data_c[target_var] + intercept
@@ -107,7 +107,7 @@ def visualize_dataset(data_: pd.DataFrame, outcome_var: str, target_var: str,
 
 
 if __name__ == "__main__":
-    data = pd.read_csv("data/iris_data.csv")
+    data = pl.read_csv("data/iris_data.csv")
     TARGET_COLUMN = "sepal_width"
 
     print(return_25th_quantile(data, TARGET_COLUMN))
