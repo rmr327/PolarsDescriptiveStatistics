@@ -80,4 +80,4 @@ if __name__ == '__main__':
     test_return_std_dev()
     test_return_25th_quantile()
     test_return_mean()
-    test_return_median
+    test_return_median()
