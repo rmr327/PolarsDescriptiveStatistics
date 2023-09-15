@@ -3,8 +3,8 @@ import sys
 import polars as pl
 import matplotlib.pyplot as plt
 sys.path.append("/workspaces/PandasDescriptiveStatisitcs/tests")
-from polars_descriptive_statistics import return_25th_quantile, return_mean
-from polars_descriptive_statistics import return_std_dev, return_median, visualize_dataset
+from src.polars_descriptive_statistics import return_25th_quantile, return_mean
+from src.polars_descriptive_statistics import return_std_dev, return_median, visualize_dataset
 
 
 def test_return_25th_quantile():
