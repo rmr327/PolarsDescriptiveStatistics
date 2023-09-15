@@ -2,7 +2,7 @@
 import sys
 import polars as pl
 import matplotlib.pyplot as plt
-sys.path.append("/workspaces/PandasDescriptiveStatisitcs/tests")
+sys.path.append("/workspaces/PolarsDescriptiveStatistics")
 from src.polars_descriptive_statistics import return_25th_quantile, return_mean
 from src.polars_descriptive_statistics import return_std_dev, return_median, visualize_dataset
 
